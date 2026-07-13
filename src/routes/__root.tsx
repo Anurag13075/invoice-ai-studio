@@ -70,6 +70,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "A premium AI-powered invoice, client and finance workspace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Ledger — AI Invoice OS" },
+      { name: "twitter:description", content: "A premium AI-powered invoice, client and finance workspace." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/529cc55f-61de-4fac-9023-acc5670c52e2/id-preview-cf255737--26254a64-ad9c-4ecb-ba4b-7f5654798624.lovable.app-1783938733299.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/529cc55f-61de-4fac-9023-acc5670c52e2/id-preview-cf255737--26254a64-ad9c-4ecb-ba4b-7f5654798624.lovable.app-1783938733299.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
