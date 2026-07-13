@@ -117,4 +117,3 @@ function Writer() {
   );
 }
 
-export { Input };

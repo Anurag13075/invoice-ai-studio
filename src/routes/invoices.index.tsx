@@ -114,4 +114,3 @@ function InvoicesList() {
   );
 }
 
-export type _T = InvoiceStatus;
