@@ -29,6 +29,7 @@ const nav = [
 const aiNav = [
   { to: "/ai/assistant", label: "AI Assistant", icon: Sparkles },
   { to: "/ai/image", label: "AI Image Studio", icon: ImageIcon },
+  { to: "/ai/writer", label: "AI Writer", icon: FileText },
   { to: "/ai/voice", label: "Voice Assistant", icon: Mic },
 ] as const;
 

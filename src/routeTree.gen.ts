@@ -10,9 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as RecurringRouteImport } from './routes/recurring'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as ExpensesRouteImport } from './routes/expenses'
+import { Route as EstimatesRouteImport } from './routes/estimates'
 import { Route as ClientsRouteImport } from './routes/clients'
 import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
@@ -20,6 +22,7 @@ import { Route as InvoicesIndexRouteImport } from './routes/invoices.index'
 import { Route as InvoicesNewRouteImport } from './routes/invoices.new'
 import { Route as InvoicesIdRouteImport } from './routes/invoices.$id'
 import { Route as AiWriterRouteImport } from './routes/ai.writer'
+import { Route as AiVoiceRouteImport } from './routes/ai.voice'
 import { Route as AiImageRouteImport } from './routes/ai.image'
 import { Route as AiAssistantRouteImport } from './routes/ai.assistant'
 import { Route as ApiAiTranscribeRouteImport } from './routes/api/ai/transcribe'
@@ -30,6 +33,11 @@ import { Route as ApiAiChatRouteImport } from './routes/api/ai/chat'
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecurringRoute = RecurringRouteImport.update({
+  id: '/recurring',
+  path: '/recurring',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -45,6 +53,11 @@ const PaymentsRoute = PaymentsRouteImport.update({
 const ExpensesRoute = ExpensesRouteImport.update({
   id: '/expenses',
   path: '/expenses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EstimatesRoute = EstimatesRouteImport.update({
+  id: '/estimates',
+  path: '/estimates',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClientsRoute = ClientsRouteImport.update({
@@ -82,6 +95,11 @@ const AiWriterRoute = AiWriterRouteImport.update({
   path: '/ai/writer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiVoiceRoute = AiVoiceRouteImport.update({
+  id: '/ai/voice',
+  path: '/ai/voice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AiImageRoute = AiImageRouteImport.update({
   id: '/ai/image',
   path: '/ai/image',
@@ -117,12 +135,15 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/clients': typeof ClientsRoute
+  '/estimates': typeof EstimatesRoute
   '/expenses': typeof ExpensesRoute
   '/payments': typeof PaymentsRoute
   '/products': typeof ProductsRoute
+  '/recurring': typeof RecurringRoute
   '/settings': typeof SettingsRoute
   '/ai/assistant': typeof AiAssistantRoute
   '/ai/image': typeof AiImageRoute
+  '/ai/voice': typeof AiVoiceRoute
   '/ai/writer': typeof AiWriterRoute
   '/invoices/$id': typeof InvoicesIdRoute
   '/invoices/new': typeof InvoicesNewRoute
@@ -136,12 +157,15 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/clients': typeof ClientsRoute
+  '/estimates': typeof EstimatesRoute
   '/expenses': typeof ExpensesRoute
   '/payments': typeof PaymentsRoute
   '/products': typeof ProductsRoute
+  '/recurring': typeof RecurringRoute
   '/settings': typeof SettingsRoute
   '/ai/assistant': typeof AiAssistantRoute
   '/ai/image': typeof AiImageRoute
+  '/ai/voice': typeof AiVoiceRoute
   '/ai/writer': typeof AiWriterRoute
   '/invoices/$id': typeof InvoicesIdRoute
   '/invoices/new': typeof InvoicesNewRoute
@@ -156,12 +180,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/analytics': typeof AnalyticsRoute
   '/clients': typeof ClientsRoute
+  '/estimates': typeof EstimatesRoute
   '/expenses': typeof ExpensesRoute
   '/payments': typeof PaymentsRoute
   '/products': typeof ProductsRoute
+  '/recurring': typeof RecurringRoute
   '/settings': typeof SettingsRoute
   '/ai/assistant': typeof AiAssistantRoute
   '/ai/image': typeof AiImageRoute
+  '/ai/voice': typeof AiVoiceRoute
   '/ai/writer': typeof AiWriterRoute
   '/invoices/$id': typeof InvoicesIdRoute
   '/invoices/new': typeof InvoicesNewRoute
@@ -177,12 +204,15 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/clients'
+    | '/estimates'
     | '/expenses'
     | '/payments'
     | '/products'
+    | '/recurring'
     | '/settings'
     | '/ai/assistant'
     | '/ai/image'
+    | '/ai/voice'
     | '/ai/writer'
     | '/invoices/$id'
     | '/invoices/new'
@@ -196,12 +226,15 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/clients'
+    | '/estimates'
     | '/expenses'
     | '/payments'
     | '/products'
+    | '/recurring'
     | '/settings'
     | '/ai/assistant'
     | '/ai/image'
+    | '/ai/voice'
     | '/ai/writer'
     | '/invoices/$id'
     | '/invoices/new'
@@ -215,12 +248,15 @@ export interface FileRouteTypes {
     | '/'
     | '/analytics'
     | '/clients'
+    | '/estimates'
     | '/expenses'
     | '/payments'
     | '/products'
+    | '/recurring'
     | '/settings'
     | '/ai/assistant'
     | '/ai/image'
+    | '/ai/voice'
     | '/ai/writer'
     | '/invoices/$id'
     | '/invoices/new'
@@ -235,12 +271,15 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AnalyticsRoute: typeof AnalyticsRoute
   ClientsRoute: typeof ClientsRoute
+  EstimatesRoute: typeof EstimatesRoute
   ExpensesRoute: typeof ExpensesRoute
   PaymentsRoute: typeof PaymentsRoute
   ProductsRoute: typeof ProductsRoute
+  RecurringRoute: typeof RecurringRoute
   SettingsRoute: typeof SettingsRoute
   AiAssistantRoute: typeof AiAssistantRoute
   AiImageRoute: typeof AiImageRoute
+  AiVoiceRoute: typeof AiVoiceRoute
   AiWriterRoute: typeof AiWriterRoute
   InvoicesIdRoute: typeof InvoicesIdRoute
   InvoicesNewRoute: typeof InvoicesNewRoute
@@ -258,6 +297,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recurring': {
+      id: '/recurring'
+      path: '/recurring'
+      fullPath: '/recurring'
+      preLoaderRoute: typeof RecurringRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -279,6 +325,13 @@ declare module '@tanstack/react-router' {
       path: '/expenses'
       fullPath: '/expenses'
       preLoaderRoute: typeof ExpensesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/estimates': {
+      id: '/estimates'
+      path: '/estimates'
+      fullPath: '/estimates'
+      preLoaderRoute: typeof EstimatesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/clients': {
@@ -330,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiWriterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai/voice': {
+      id: '/ai/voice'
+      path: '/ai/voice'
+      fullPath: '/ai/voice'
+      preLoaderRoute: typeof AiVoiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ai/image': {
       id: '/ai/image'
       path: '/ai/image'
@@ -379,12 +439,15 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AnalyticsRoute: AnalyticsRoute,
   ClientsRoute: ClientsRoute,
+  EstimatesRoute: EstimatesRoute,
   ExpensesRoute: ExpensesRoute,
   PaymentsRoute: PaymentsRoute,
   ProductsRoute: ProductsRoute,
+  RecurringRoute: RecurringRoute,
   SettingsRoute: SettingsRoute,
   AiAssistantRoute: AiAssistantRoute,
   AiImageRoute: AiImageRoute,
+  AiVoiceRoute: AiVoiceRoute,
   AiWriterRoute: AiWriterRoute,
   InvoicesIdRoute: InvoicesIdRoute,
   InvoicesNewRoute: InvoicesNewRoute,
