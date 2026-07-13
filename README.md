@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./invoice.png" alt="InvoiceFlow AI" width="100%" />
+<img src="./new-invoice.png" alt="InvoiceFlow AI" width="100%" />
 
 # 🧾 InvoiceFlow AI
 
