@@ -9,38 +9,292 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as PaymentsRouteImport } from './routes/payments'
+import { Route as ExpensesRouteImport } from './routes/expenses'
+import { Route as ClientsRouteImport } from './routes/clients'
+import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InvoicesIndexRouteImport } from './routes/invoices.index'
+import { Route as InvoicesNewRouteImport } from './routes/invoices.new'
+import { Route as InvoicesIdRouteImport } from './routes/invoices.$id'
+import { Route as AiWriterRouteImport } from './routes/ai.writer'
+import { Route as AiImageRouteImport } from './routes/ai.image'
+import { Route as AiAssistantRouteImport } from './routes/ai.assistant'
+import { Route as ApiAiTranscribeRouteImport } from './routes/api/ai/transcribe'
+import { Route as ApiAiInvoiceRouteImport } from './routes/api/ai/invoice'
+import { Route as ApiAiImageRouteImport } from './routes/api/ai/image'
+import { Route as ApiAiChatRouteImport } from './routes/api/ai/chat'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentsRoute = PaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExpensesRoute = ExpensesRouteImport.update({
+  id: '/expenses',
+  path: '/expenses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientsRoute = ClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsRoute = AnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InvoicesIndexRoute = InvoicesIndexRouteImport.update({
+  id: '/invoices/',
+  path: '/invoices/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InvoicesNewRoute = InvoicesNewRouteImport.update({
+  id: '/invoices/new',
+  path: '/invoices/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InvoicesIdRoute = InvoicesIdRouteImport.update({
+  id: '/invoices/$id',
+  path: '/invoices/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiWriterRoute = AiWriterRouteImport.update({
+  id: '/ai/writer',
+  path: '/ai/writer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiImageRoute = AiImageRouteImport.update({
+  id: '/ai/image',
+  path: '/ai/image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiAssistantRoute = AiAssistantRouteImport.update({
+  id: '/ai/assistant',
+  path: '/ai/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAiTranscribeRoute = ApiAiTranscribeRouteImport.update({
+  id: '/api/ai/transcribe',
+  path: '/api/ai/transcribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAiInvoiceRoute = ApiAiInvoiceRouteImport.update({
+  id: '/api/ai/invoice',
+  path: '/api/ai/invoice',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAiImageRoute = ApiAiImageRouteImport.update({
+  id: '/api/ai/image',
+  path: '/api/ai/image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAiChatRoute = ApiAiChatRouteImport.update({
+  id: '/api/ai/chat',
+  path: '/api/ai/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/clients': typeof ClientsRoute
+  '/expenses': typeof ExpensesRoute
+  '/payments': typeof PaymentsRoute
+  '/products': typeof ProductsRoute
+  '/settings': typeof SettingsRoute
+  '/ai/assistant': typeof AiAssistantRoute
+  '/ai/image': typeof AiImageRoute
+  '/ai/writer': typeof AiWriterRoute
+  '/invoices/$id': typeof InvoicesIdRoute
+  '/invoices/new': typeof InvoicesNewRoute
+  '/invoices/': typeof InvoicesIndexRoute
+  '/api/ai/chat': typeof ApiAiChatRoute
+  '/api/ai/image': typeof ApiAiImageRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceRoute
+  '/api/ai/transcribe': typeof ApiAiTranscribeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/clients': typeof ClientsRoute
+  '/expenses': typeof ExpensesRoute
+  '/payments': typeof PaymentsRoute
+  '/products': typeof ProductsRoute
+  '/settings': typeof SettingsRoute
+  '/ai/assistant': typeof AiAssistantRoute
+  '/ai/image': typeof AiImageRoute
+  '/ai/writer': typeof AiWriterRoute
+  '/invoices/$id': typeof InvoicesIdRoute
+  '/invoices/new': typeof InvoicesNewRoute
+  '/invoices': typeof InvoicesIndexRoute
+  '/api/ai/chat': typeof ApiAiChatRoute
+  '/api/ai/image': typeof ApiAiImageRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceRoute
+  '/api/ai/transcribe': typeof ApiAiTranscribeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analytics': typeof AnalyticsRoute
+  '/clients': typeof ClientsRoute
+  '/expenses': typeof ExpensesRoute
+  '/payments': typeof PaymentsRoute
+  '/products': typeof ProductsRoute
+  '/settings': typeof SettingsRoute
+  '/ai/assistant': typeof AiAssistantRoute
+  '/ai/image': typeof AiImageRoute
+  '/ai/writer': typeof AiWriterRoute
+  '/invoices/$id': typeof InvoicesIdRoute
+  '/invoices/new': typeof InvoicesNewRoute
+  '/invoices/': typeof InvoicesIndexRoute
+  '/api/ai/chat': typeof ApiAiChatRoute
+  '/api/ai/image': typeof ApiAiImageRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceRoute
+  '/api/ai/transcribe': typeof ApiAiTranscribeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/analytics'
+    | '/clients'
+    | '/expenses'
+    | '/payments'
+    | '/products'
+    | '/settings'
+    | '/ai/assistant'
+    | '/ai/image'
+    | '/ai/writer'
+    | '/invoices/$id'
+    | '/invoices/new'
+    | '/invoices/'
+    | '/api/ai/chat'
+    | '/api/ai/image'
+    | '/api/ai/invoice'
+    | '/api/ai/transcribe'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/analytics'
+    | '/clients'
+    | '/expenses'
+    | '/payments'
+    | '/products'
+    | '/settings'
+    | '/ai/assistant'
+    | '/ai/image'
+    | '/ai/writer'
+    | '/invoices/$id'
+    | '/invoices/new'
+    | '/invoices'
+    | '/api/ai/chat'
+    | '/api/ai/image'
+    | '/api/ai/invoice'
+    | '/api/ai/transcribe'
+  id:
+    | '__root__'
+    | '/'
+    | '/analytics'
+    | '/clients'
+    | '/expenses'
+    | '/payments'
+    | '/products'
+    | '/settings'
+    | '/ai/assistant'
+    | '/ai/image'
+    | '/ai/writer'
+    | '/invoices/$id'
+    | '/invoices/new'
+    | '/invoices/'
+    | '/api/ai/chat'
+    | '/api/ai/image'
+    | '/api/ai/invoice'
+    | '/api/ai/transcribe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnalyticsRoute: typeof AnalyticsRoute
+  ClientsRoute: typeof ClientsRoute
+  ExpensesRoute: typeof ExpensesRoute
+  PaymentsRoute: typeof PaymentsRoute
+  ProductsRoute: typeof ProductsRoute
+  SettingsRoute: typeof SettingsRoute
+  AiAssistantRoute: typeof AiAssistantRoute
+  AiImageRoute: typeof AiImageRoute
+  AiWriterRoute: typeof AiWriterRoute
+  InvoicesIdRoute: typeof InvoicesIdRoute
+  InvoicesNewRoute: typeof InvoicesNewRoute
+  InvoicesIndexRoute: typeof InvoicesIndexRoute
+  ApiAiChatRoute: typeof ApiAiChatRoute
+  ApiAiImageRoute: typeof ApiAiImageRoute
+  ApiAiInvoiceRoute: typeof ApiAiInvoiceRoute
+  ApiAiTranscribeRoute: typeof ApiAiTranscribeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payments': {
+      id: '/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof PaymentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/expenses': {
+      id: '/expenses'
+      path: '/expenses'
+      fullPath: '/expenses'
+      preLoaderRoute: typeof ExpensesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clients': {
+      id: '/clients'
+      path: '/clients'
+      fullPath: '/clients'
+      preLoaderRoute: typeof ClientsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics': {
+      id: '/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +302,98 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/invoices/': {
+      id: '/invoices/'
+      path: '/invoices'
+      fullPath: '/invoices/'
+      preLoaderRoute: typeof InvoicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invoices/new': {
+      id: '/invoices/new'
+      path: '/invoices/new'
+      fullPath: '/invoices/new'
+      preLoaderRoute: typeof InvoicesNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invoices/$id': {
+      id: '/invoices/$id'
+      path: '/invoices/$id'
+      fullPath: '/invoices/$id'
+      preLoaderRoute: typeof InvoicesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai/writer': {
+      id: '/ai/writer'
+      path: '/ai/writer'
+      fullPath: '/ai/writer'
+      preLoaderRoute: typeof AiWriterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai/image': {
+      id: '/ai/image'
+      path: '/ai/image'
+      fullPath: '/ai/image'
+      preLoaderRoute: typeof AiImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai/assistant': {
+      id: '/ai/assistant'
+      path: '/ai/assistant'
+      fullPath: '/ai/assistant'
+      preLoaderRoute: typeof AiAssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai/transcribe': {
+      id: '/api/ai/transcribe'
+      path: '/api/ai/transcribe'
+      fullPath: '/api/ai/transcribe'
+      preLoaderRoute: typeof ApiAiTranscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai/invoice': {
+      id: '/api/ai/invoice'
+      path: '/api/ai/invoice'
+      fullPath: '/api/ai/invoice'
+      preLoaderRoute: typeof ApiAiInvoiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai/image': {
+      id: '/api/ai/image'
+      path: '/api/ai/image'
+      fullPath: '/api/ai/image'
+      preLoaderRoute: typeof ApiAiImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ai/chat': {
+      id: '/api/ai/chat'
+      path: '/api/ai/chat'
+      fullPath: '/api/ai/chat'
+      preLoaderRoute: typeof ApiAiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnalyticsRoute: AnalyticsRoute,
+  ClientsRoute: ClientsRoute,
+  ExpensesRoute: ExpensesRoute,
+  PaymentsRoute: PaymentsRoute,
+  ProductsRoute: ProductsRoute,
+  SettingsRoute: SettingsRoute,
+  AiAssistantRoute: AiAssistantRoute,
+  AiImageRoute: AiImageRoute,
+  AiWriterRoute: AiWriterRoute,
+  InvoicesIdRoute: InvoicesIdRoute,
+  InvoicesNewRoute: InvoicesNewRoute,
+  InvoicesIndexRoute: InvoicesIndexRoute,
+  ApiAiChatRoute: ApiAiChatRoute,
+  ApiAiImageRoute: ApiAiImageRoute,
+  ApiAiInvoiceRoute: ApiAiInvoiceRoute,
+  ApiAiTranscribeRoute: ApiAiTranscribeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
