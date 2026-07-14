@@ -72,6 +72,13 @@ export function AppShell({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  if (authed === null) {
+    return <div className="dark min-h-screen grid place-items-center bg-background text-foreground"><Loader2 className="size-6 animate-spin text-emerald-400" /></div>;
+  }
+  if (!authed) return null;
+
+  const signOut = async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); };
+
   return (
     <div className="dark min-h-screen flex bg-background text-foreground">
       {/* Sidebar */}
