@@ -36,12 +36,30 @@ const aiNav = [
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
   const [cmdOpen, setCmdOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [authed, setAuthed] = useState<boolean | null>(null);
+  const [email, setEmail] = useState<string>("");
   const unread = useStore((s) => s.notifications.filter((n) => !n.read).length);
   const seed = useStore((s) => s.seed);
 
   useEffect(() => { seed(); }, [seed]);
+
+  useEffect(() => {
+    let mounted = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
+      const s = data.session;
+      if (!s) { navigate({ to: "/auth" }); setAuthed(false); }
+      else { setAuthed(true); setEmail(s.user.email ?? ""); }
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      if (!session) { setAuthed(false); navigate({ to: "/auth" }); }
+      else { setAuthed(true); setEmail(session.user.email ?? ""); }
+    });
+    return () => { mounted = false; sub.subscription.unsubscribe(); };
+  }, [navigate]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
