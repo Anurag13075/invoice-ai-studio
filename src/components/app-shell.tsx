@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, FileText, Users, Package, Repeat, FileCheck2, Wallet,
   Receipt, Sparkles, Image as ImageIcon, Mic, BarChart3, Settings as SettingsIcon,
-  Bell, Search, Plus,
+  Bell, Search, Plus, LogOut, Loader2,
 } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/lib/store";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { CommandPalette } from "@/components/command-palette";
 import { NotificationsPanel } from "@/components/notifications-panel";
