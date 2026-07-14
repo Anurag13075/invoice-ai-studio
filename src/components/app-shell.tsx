@@ -141,10 +141,14 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </nav>
 
-        <div className="p-3 border-t border-sidebar-border">
+        <div className="p-3 border-t border-sidebar-border space-y-1">
           <Link to="/settings" className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sm", pathname === "/settings" ? "bg-sidebar-accent text-sidebar-accent-foreground" : "text-sidebar-foreground hover:bg-sidebar-accent/60")}>
             <SettingsIcon className="size-4" /> Settings
           </Link>
+          <button onClick={signOut} className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-sidebar-foreground hover:bg-sidebar-accent/60">
+            <LogOut className="size-4" /> Sign out
+          </button>
+          {email && <div className="px-3 pt-1 text-[10px] text-muted-foreground truncate" title={email}>{email}</div>}
         </div>
       </aside>
 
