@@ -31,6 +31,13 @@ function NewInvoice() {
   const [notes, setNotes] = useState("");
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiBusy, setAiBusy] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [poNumber, setPoNumber] = useState("");
+  const [shipToName, setShipToName] = useState("");
+  const [shipToAddress, setShipToAddress] = useState("");
+  const [paymentInstructions, setPaymentInstructions] = useState(settings.bankDetails || "");
+  const [terms, setTerms] = useState(settings.defaultTerms || "");
+  const [footer, setFooter] = useState(settings.defaultFooter || "");
 
   const total = invoiceTotal({ items, discount });
   const number = `${settings.invoicePrefix}${settings.nextInvoiceNumber}`;
@@ -40,10 +47,18 @@ function NewInvoice() {
 
   const save = (status: "draft" | "sent") => {
     if (!clientId) return toast.error("Pick a client");
+    const c = clients.find((x) => x.id === clientId);
     const inv = {
       id: uid(), number, clientId, status, issueDate, dueDate,
       items, discount, currency: settings.currency, notes, paidAmount: 0,
       createdAt: new Date().toISOString(),
+      subject: subject || undefined,
+      poNumber: poNumber || undefined,
+      billTo: c ? { name: c.company, address: c.address, email: c.email, phone: c.phone, vat: c.vat } : undefined,
+      shipTo: shipToName || shipToAddress ? { name: shipToName, address: shipToAddress } : undefined,
+      paymentInstructions: paymentInstructions || undefined,
+      terms: terms || undefined,
+      footer: footer || undefined,
     };
     addInvoice(inv);
     toast.success(`Invoice ${number} ${status === "draft" ? "saved" : "sent"}`);
