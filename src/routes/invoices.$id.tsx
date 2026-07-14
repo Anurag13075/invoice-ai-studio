@@ -144,6 +144,20 @@ function InvoiceView() {
           </div>
 
           {invoice.notes && <div className="mt-8 text-sm text-muted-foreground italic border-t border-border pt-4">{invoice.notes}</div>}
+
+          {invoice.paymentInstructions && (
+            <div className="mt-6 border-t border-border pt-4">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Payment instructions</div>
+              <div className="text-xs font-mono whitespace-pre-line text-muted-foreground">{invoice.paymentInstructions}</div>
+            </div>
+          )}
+          {invoice.terms && (
+            <div className="mt-4">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Terms &amp; conditions</div>
+              <div className="text-xs whitespace-pre-line text-muted-foreground">{invoice.terms}</div>
+            </div>
+          )}
+          {invoice.footer && <div className="mt-6 text-center text-xs text-muted-foreground border-t border-border pt-4">{invoice.footer}</div>}
         </div>
 
         <div className="space-y-4">
