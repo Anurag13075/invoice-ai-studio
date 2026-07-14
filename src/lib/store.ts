@@ -25,6 +25,14 @@ export interface Invoice {
   notes: string;
   paidAmount: number;
   createdAt: string;
+  // Detailed business fields (all optional for backward compat)
+  subject?: string;
+  poNumber?: string;
+  billTo?: { name: string; address: string; email: string; phone: string; vat: string };
+  shipTo?: { name: string; address: string };
+  paymentInstructions?: string;
+  terms?: string;
+  footer?: string;
 }
 
 export interface Estimate {
