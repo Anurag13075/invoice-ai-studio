@@ -25,6 +25,14 @@ export interface Invoice {
   notes: string;
   paidAmount: number;
   createdAt: string;
+  // Detailed business fields (all optional for backward compat)
+  subject?: string;
+  poNumber?: string;
+  billTo?: { name: string; address: string; email: string; phone: string; vat: string };
+  shipTo?: { name: string; address: string };
+  paymentInstructions?: string;
+  terms?: string;
+  footer?: string;
 }
 
 export interface Estimate {
@@ -110,12 +118,18 @@ export interface Settings {
   companyName: string;
   companyEmail: string;
   companyAddress: string;
+  companyPhone?: string;
+  companyWebsite?: string;
+  companyTaxId?: string;
   companyLogo?: string;
   currency: string;
   taxRate: number;
   invoicePrefix: string;
   nextInvoiceNumber: number;
   brandColor: string;
+  bankDetails?: string;
+  defaultTerms?: string;
+  defaultFooter?: string;
 }
 
 interface AppState {
@@ -209,11 +223,17 @@ export const useStore = create<AppState>()(
         companyName: "Your Company",
         companyEmail: "hello@yourcompany.com",
         companyAddress: "123 Main St, City",
+        companyPhone: "+1 555 0100",
+        companyWebsite: "yourcompany.com",
+        companyTaxId: "",
         currency: "USD",
         taxRate: 0,
         invoicePrefix: "INV-",
         nextInvoiceNumber: 1006,
         brandColor: "#22c55e",
+        bankDetails: "Bank: Chase\nAccount: 000 123 456\nRouting: 021000021\nSWIFT: CHASUS33",
+        defaultTerms: "Payment due within 14 days. Late payments incur a 1.5% monthly fee.",
+        defaultFooter: "Thank you for your business!",
       },
       addInvoice: (i) => set((s) => ({ invoices: [i, ...s.invoices], settings: { ...s.settings, nextInvoiceNumber: s.settings.nextInvoiceNumber + 1 } })),
       updateInvoice: (id, patch) => set((s) => ({ invoices: s.invoices.map((x) => (x.id === id ? { ...x, ...patch } : x)) })),

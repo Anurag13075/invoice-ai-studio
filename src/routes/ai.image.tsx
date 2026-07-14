@@ -36,8 +36,9 @@ function ImageStudio() {
       const res = await fetch("/api/ai/image", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt }) });
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
-      if (!data.image) throw new Error("No image returned");
-      addImage({ id: uid(), url: data.image, prompt, createdAt: new Date().toISOString() });
+      const url = data.url || data.image;
+      if (!url) throw new Error("No image returned");
+      addImage({ id: uid(), url, prompt, createdAt: new Date().toISOString() });
       toast.success("Image generated");
     } catch (e) {
       toast.error("Generation failed", { description: (e as Error).message });

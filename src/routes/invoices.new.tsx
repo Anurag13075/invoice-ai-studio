@@ -31,6 +31,13 @@ function NewInvoice() {
   const [notes, setNotes] = useState("");
   const [aiPrompt, setAiPrompt] = useState("");
   const [aiBusy, setAiBusy] = useState(false);
+  const [subject, setSubject] = useState("");
+  const [poNumber, setPoNumber] = useState("");
+  const [shipToName, setShipToName] = useState("");
+  const [shipToAddress, setShipToAddress] = useState("");
+  const [paymentInstructions, setPaymentInstructions] = useState(settings.bankDetails || "");
+  const [terms, setTerms] = useState(settings.defaultTerms || "");
+  const [footer, setFooter] = useState(settings.defaultFooter || "");
 
   const total = invoiceTotal({ items, discount });
   const number = `${settings.invoicePrefix}${settings.nextInvoiceNumber}`;
@@ -40,10 +47,18 @@ function NewInvoice() {
 
   const save = (status: "draft" | "sent") => {
     if (!clientId) return toast.error("Pick a client");
+    const c = clients.find((x) => x.id === clientId);
     const inv = {
       id: uid(), number, clientId, status, issueDate, dueDate,
       items, discount, currency: settings.currency, notes, paidAmount: 0,
       createdAt: new Date().toISOString(),
+      subject: subject || undefined,
+      poNumber: poNumber || undefined,
+      billTo: c ? { name: c.company, address: c.address, email: c.email, phone: c.phone, vat: c.vat } : undefined,
+      shipTo: shipToName || shipToAddress ? { name: shipToName, address: shipToAddress } : undefined,
+      paymentInstructions: paymentInstructions || undefined,
+      terms: terms || undefined,
+      footer: footer || undefined,
     };
     addInvoice(inv);
     toast.success(`Invoice ${number} ${status === "draft" ? "saved" : "sent"}`);
@@ -91,7 +106,7 @@ function NewInvoice() {
             </div>
           </motion.div>
 
-          <div className="rounded-2xl border border-border bg-card p-5">
+          <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <Label className="text-xs">Client</Label>
@@ -109,6 +124,26 @@ function NewInvoice() {
               <div>
                 <Label className="text-xs">Due date</Label>
                 <Input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="bg-background border-border rounded-lg mt-1" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Subject / Project</Label>
+                <Input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Q2 website redesign" className="bg-background border-border rounded-lg mt-1" />
+              </div>
+              <div>
+                <Label className="text-xs">PO Number</Label>
+                <Input value={poNumber} onChange={(e) => setPoNumber(e.target.value)} placeholder="PO-2026-0042" className="bg-background border-border rounded-lg mt-1" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Ship to (name)</Label>
+                <Input value={shipToName} onChange={(e) => setShipToName(e.target.value)} placeholder="Optional" className="bg-background border-border rounded-lg mt-1" />
+              </div>
+              <div>
+                <Label className="text-xs">Ship to (address)</Label>
+                <Input value={shipToAddress} onChange={(e) => setShipToAddress(e.target.value)} placeholder="Optional" className="bg-background border-border rounded-lg mt-1" />
               </div>
             </div>
           </div>
@@ -142,6 +177,21 @@ function NewInvoice() {
           <div className="rounded-2xl border border-border bg-card p-5">
             <Label className="text-xs">Notes</Label>
             <Textarea rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} className="mt-1 bg-background border-border rounded-lg" placeholder="Thank you for your business." />
+          </div>
+
+          <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+            <div>
+              <Label className="text-xs">Payment instructions / bank details</Label>
+              <Textarea rows={4} value={paymentInstructions} onChange={(e) => setPaymentInstructions(e.target.value)} className="mt-1 bg-background border-border rounded-lg font-mono text-xs" />
+            </div>
+            <div>
+              <Label className="text-xs">Terms &amp; conditions</Label>
+              <Textarea rows={3} value={terms} onChange={(e) => setTerms(e.target.value)} className="mt-1 bg-background border-border rounded-lg text-xs" />
+            </div>
+            <div>
+              <Label className="text-xs">Footer</Label>
+              <Input value={footer} onChange={(e) => setFooter(e.target.value)} className="mt-1 bg-background border-border rounded-lg" />
+            </div>
           </div>
         </div>
 

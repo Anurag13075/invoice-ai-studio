@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, FileText, Users, Package, Repeat, FileCheck2, Wallet,
   Receipt, Sparkles, Image as ImageIcon, Mic, BarChart3, Settings as SettingsIcon,
-  Bell, Search, Plus,
+  Bell, Search, Plus, LogOut, Loader2,
 } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useStore } from "@/lib/store";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { CommandPalette } from "@/components/command-palette";
 import { NotificationsPanel } from "@/components/notifications-panel";
@@ -35,12 +36,30 @@ const aiNav = [
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
   const [cmdOpen, setCmdOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [authed, setAuthed] = useState<boolean | null>(null);
+  const [email, setEmail] = useState<string>("");
   const unread = useStore((s) => s.notifications.filter((n) => !n.read).length);
   const seed = useStore((s) => s.seed);
 
   useEffect(() => { seed(); }, [seed]);
+
+  useEffect(() => {
+    let mounted = true;
+    supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
+      const s = data.session;
+      if (!s) { navigate({ to: "/auth" }); setAuthed(false); }
+      else { setAuthed(true); setEmail(s.user.email ?? ""); }
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
+      if (!session) { setAuthed(false); navigate({ to: "/auth" }); }
+      else { setAuthed(true); setEmail(session.user.email ?? ""); }
+    });
+    return () => { mounted = false; sub.subscription.unsubscribe(); };
+  }, [navigate]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -52,6 +71,13 @@ export function AppShell({ children }: { children: ReactNode }) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  if (authed === null) {
+    return <div className="dark min-h-screen grid place-items-center bg-background text-foreground"><Loader2 className="size-6 animate-spin text-emerald-400" /></div>;
+  }
+  if (!authed) return null;
+
+  const signOut = async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); };
 
   return (
     <div className="dark min-h-screen flex bg-background text-foreground">
@@ -115,10 +141,14 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </nav>
 
-        <div className="p-3 border-t border-sidebar-border">
+        <div className="p-3 border-t border-sidebar-border space-y-1">
           <Link to="/settings" className={cn("flex items-center gap-3 rounded-lg px-3 py-2 text-sm", pathname === "/settings" ? "bg-sidebar-accent text-sidebar-accent-foreground" : "text-sidebar-foreground hover:bg-sidebar-accent/60")}>
             <SettingsIcon className="size-4" /> Settings
           </Link>
+          <button onClick={signOut} className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-sidebar-foreground hover:bg-sidebar-accent/60">
+            <LogOut className="size-4" /> Sign out
+          </button>
+          {email && <div className="px-3 pt-1 text-[10px] text-muted-foreground truncate" title={email}>{email}</div>}
         </div>
       </aside>
 
