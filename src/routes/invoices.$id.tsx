@@ -78,24 +78,39 @@ function InvoiceView() {
             <StatusBadge status={invoice.status} />
           </div>
 
+          {invoice.subject && <div className="mb-6 text-sm"><span className="text-muted-foreground">Subject: </span><span className="font-medium">{invoice.subject}</span></div>}
+
           <div className="grid grid-cols-2 gap-6 mb-8">
             <div>
               <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">From</div>
               <div className="font-semibold">{settings.companyName}</div>
-              <div className="text-sm text-muted-foreground">{settings.companyAddress}</div>
+              <div className="text-sm text-muted-foreground whitespace-pre-line">{settings.companyAddress}</div>
               <div className="text-sm text-muted-foreground">{settings.companyEmail}</div>
+              {settings.companyPhone && <div className="text-sm text-muted-foreground">{settings.companyPhone}</div>}
+              {settings.companyTaxId && <div className="text-sm text-muted-foreground">Tax ID: {settings.companyTaxId}</div>}
             </div>
             <div>
               <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Bill to</div>
-              <div className="font-semibold">{client?.company || "—"}</div>
-              <div className="text-sm text-muted-foreground">{client?.address}</div>
-              <div className="text-sm text-muted-foreground">{client?.email}</div>
+              <div className="font-semibold">{invoice.billTo?.name || client?.company || "—"}</div>
+              <div className="text-sm text-muted-foreground whitespace-pre-line">{invoice.billTo?.address || client?.address}</div>
+              <div className="text-sm text-muted-foreground">{invoice.billTo?.email || client?.email}</div>
+              {(invoice.billTo?.phone || client?.phone) && <div className="text-sm text-muted-foreground">{invoice.billTo?.phone || client?.phone}</div>}
+              {(invoice.billTo?.vat || client?.vat) && <div className="text-sm text-muted-foreground">VAT: {invoice.billTo?.vat || client?.vat}</div>}
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-6 mb-8 text-sm">
+          {invoice.shipTo && (invoice.shipTo.name || invoice.shipTo.address) && (
+            <div className="mb-6">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Ship to</div>
+              <div className="text-sm">{invoice.shipTo.name}</div>
+              <div className="text-sm text-muted-foreground whitespace-pre-line">{invoice.shipTo.address}</div>
+            </div>
+          )}
+
+          <div className="grid grid-cols-4 gap-6 mb-8 text-sm">
             <div><div className="text-[10px] uppercase tracking-wider text-muted-foreground">Issue date</div><div className="mt-1">{format(new Date(invoice.issueDate), "MMM d, yyyy")}</div></div>
             <div><div className="text-[10px] uppercase tracking-wider text-muted-foreground">Due date</div><div className="mt-1">{format(new Date(invoice.dueDate), "MMM d, yyyy")}</div></div>
+            {invoice.poNumber && <div><div className="text-[10px] uppercase tracking-wider text-muted-foreground">PO Number</div><div className="mt-1">{invoice.poNumber}</div></div>}
             <div><div className="text-[10px] uppercase tracking-wider text-muted-foreground">Amount</div><div className="mt-1 font-semibold">{currency(total, invoice.currency)}</div></div>
           </div>
 
