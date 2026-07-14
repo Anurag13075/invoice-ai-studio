@@ -1,66 +1,83 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mic, Square, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
+// Uses browser Web Speech API for reliable, free, real-time transcription.
+type SpeechRecognitionEvent = {
+  results: { [k: number]: { [k: number]: { transcript: string }; isFinal: boolean; length: number }; length: number };
+};
+type SpeechRecognitionInstance = {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: (e: SpeechRecognitionEvent) => void;
+  onerror: (e: { error: string }) => void;
+  onend: () => void;
+  start: () => void;
+  stop: () => void;
+};
+
+function getRecognition(): SpeechRecognitionInstance | null {
+  if (typeof window === "undefined") return null;
+  const w = window as unknown as { SpeechRecognition?: new () => SpeechRecognitionInstance; webkitSpeechRecognition?: new () => SpeechRecognitionInstance };
+  const Ctor = w.SpeechRecognition || w.webkitSpeechRecognition;
+  if (!Ctor) return null;
+  const r = new Ctor();
+  r.continuous = true;
+  r.interimResults = true;
+  r.lang = "en-US";
+  return r;
+}
+
 export function VoiceAssistant() {
   const [rec, setRec] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const mediaRef = useRef<MediaRecorder | null>(null);
-  const chunksRef = useRef<Blob[]>([]);
+  const [busy] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [text, setText] = useState("");
+  const recRef = useRef<SpeechRecognitionInstance | null>(null);
 
-  const start = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const mr = new MediaRecorder(stream);
-      chunksRef.current = [];
-      mr.ondataavailable = (e) => e.data.size && chunksRef.current.push(e.data);
-      mr.onstop = async () => {
-        stream.getTracks().forEach((t) => t.stop());
-        const blob = new Blob(chunksRef.current, { type: mr.mimeType || "audio/webm" });
-        setBusy(true);
-        try {
-          const fd = new FormData();
-          const ext = (mr.mimeType || "audio/webm").includes("mp4") ? "mp4" : "webm";
-          fd.append("file", blob, `voice.${ext}`);
-          const res = await fetch("/api/ai/transcribe", { method: "POST", body: fd });
-          const data = await res.json();
-          if (data.text) toast.success("Voice captured", { description: data.text });
-          else toast.error("Transcription failed", { description: data.error || "Unknown error" });
-        } catch (e) {
-          toast.error("Transcription failed", { description: (e as Error).message });
-        } finally {
-          setBusy(false);
-        }
-      };
-      mr.start();
-      mediaRef.current = mr;
-      setRec(true);
-    } catch {
-      toast.error("Microphone permission denied");
-    }
-  };
+  useEffect(() => () => { try { recRef.current?.stop(); } catch { /* noop */ } }, []);
 
-  const stop = () => {
-    mediaRef.current?.stop();
-    setRec(false);
+  const start = () => {
+    const r = getRecognition();
+    if (!r) { toast.error("Voice not supported in this browser. Use Chrome or Edge."); return; }
+    recRef.current = r;
+    setText("");
+    setOpen(true);
+    setRec(true);
+    r.onresult = (e) => {
+      let out = "";
+      for (let i = 0; i < e.results.length; i++) out += e.results[i][0].transcript;
+      setText(out);
+    };
+    r.onerror = (e) => { toast.error("Voice error", { description: e.error }); setRec(false); };
+    r.onend = () => setRec(false);
+    r.start();
   };
+  const stop = () => { try { recRef.current?.stop(); } catch { /* noop */ } setRec(false); };
 
   return (
-    <motion.button
-      onClick={rec ? stop : start}
-      whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-      className="fixed bottom-6 right-24 z-40 size-14 rounded-full bg-card border border-border shadow-2xl grid place-items-center text-foreground"
-      aria-label="Voice assistant"
-    >
-      <AnimatePresence mode="wait" initial={false}>
-        {busy
-          ? <motion.span key="l" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><Loader2 className="size-5 animate-spin" /></motion.span>
-          : rec
-            ? <motion.span key="s" initial={{ scale: 0.6 }} animate={{ scale: 1 }} exit={{ scale: 0.6 }}><Square className="size-5 text-emerald-400" /></motion.span>
-            : <motion.span key="m" initial={{ scale: 0.6 }} animate={{ scale: 1 }} exit={{ scale: 0.6 }}><Mic className="size-5" /></motion.span>}
+    <>
+      <motion.button
+        onClick={rec ? stop : start}
+        whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+        className="fixed bottom-6 left-6 z-40 size-12 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 text-black grid place-items-center shadow-xl shadow-emerald-500/30"
+        aria-label="Voice assistant"
+      >
+        {busy ? <Loader2 className="size-5 animate-spin" /> : rec ? <Square className="size-5" /> : <Mic className="size-5" />}
+      </motion.button>
+      <AnimatePresence>
+        {open && (
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="fixed bottom-24 left-6 z-40 w-80 rounded-2xl border border-border bg-card p-4 shadow-2xl">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-xs uppercase tracking-wider text-muted-foreground">{rec ? "Listening…" : "Transcript"}</div>
+              <button onClick={() => setOpen(false)} className="text-xs text-muted-foreground hover:text-foreground">Close</button>
+            </div>
+            <div className="text-sm min-h-16 whitespace-pre-wrap">{text || "Say something…"}</div>
+          </motion.div>
+        )}
       </AnimatePresence>
-      {rec && <span className="absolute inset-0 rounded-full ring-2 ring-emerald-400 animate-ping" />}
-    </motion.button>
+    </>
   );
 }
