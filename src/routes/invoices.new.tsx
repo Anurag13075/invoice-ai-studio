@@ -178,6 +178,21 @@ function NewInvoice() {
             <Label className="text-xs">Notes</Label>
             <Textarea rows={3} value={notes} onChange={(e) => setNotes(e.target.value)} className="mt-1 bg-background border-border rounded-lg" placeholder="Thank you for your business." />
           </div>
+
+          <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+            <div>
+              <Label className="text-xs">Payment instructions / bank details</Label>
+              <Textarea rows={4} value={paymentInstructions} onChange={(e) => setPaymentInstructions(e.target.value)} className="mt-1 bg-background border-border rounded-lg font-mono text-xs" />
+            </div>
+            <div>
+              <Label className="text-xs">Terms &amp; conditions</Label>
+              <Textarea rows={3} value={terms} onChange={(e) => setTerms(e.target.value)} className="mt-1 bg-background border-border rounded-lg text-xs" />
+            </div>
+            <div>
+              <Label className="text-xs">Footer</Label>
+              <Input value={footer} onChange={(e) => setFooter(e.target.value)} className="mt-1 bg-background border-border rounded-lg" />
+            </div>
+          </div>
         </div>
 
         <div className="space-y-4">
