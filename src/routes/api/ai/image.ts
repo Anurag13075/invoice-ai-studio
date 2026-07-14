@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-// Generates an image via Lovable AI (google/gemini-2.5-flash-image).
+// Generates an image via Lovable AI (google/gemini-2.5-flash-image-preview).
 // Returns { url: "data:image/png;base64,..." }
 export const Route = createFileRoute("/api/ai/image")({
   server: {
@@ -14,20 +14,22 @@ export const Route = createFileRoute("/api/ai/image")({
           method: "POST",
           headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "google/gemini-2.5-flash-image",
+            model: "google/gemini-2.5-flash-image-preview",
             modalities: ["image", "text"],
             messages: [{ role: "user", content: prompt }],
           }),
         });
-        if (!resp.ok) return new Response(await resp.text(), { status: resp.status });
+        if (!resp.ok) {
+          const txt = await resp.text();
+          return new Response(JSON.stringify({ error: txt }), { status: resp.status, headers: { "Content-Type": "application/json" } });
+        }
         const data = await resp.json();
-        // Gateway returns image url in message.images[0].image_url.url
         const msg = data.choices?.[0]?.message;
         const url =
           msg?.images?.[0]?.image_url?.url ||
           msg?.images?.[0]?.url ||
           null;
-        if (!url) return new Response(JSON.stringify({ error: "No image", raw: data }), { status: 500 });
+        if (!url) return new Response(JSON.stringify({ error: "No image in response" }), { status: 500, headers: { "Content-Type": "application/json" } });
         return Response.json({ url });
       },
     },
