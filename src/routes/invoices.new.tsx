@@ -106,7 +106,7 @@ function NewInvoice() {
             </div>
           </motion.div>
 
-          <div className="rounded-2xl border border-border bg-card p-5">
+          <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <Label className="text-xs">Client</Label>
@@ -124,6 +124,26 @@ function NewInvoice() {
               <div>
                 <Label className="text-xs">Due date</Label>
                 <Input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="bg-background border-border rounded-lg mt-1" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Subject / Project</Label>
+                <Input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Q2 website redesign" className="bg-background border-border rounded-lg mt-1" />
+              </div>
+              <div>
+                <Label className="text-xs">PO Number</Label>
+                <Input value={poNumber} onChange={(e) => setPoNumber(e.target.value)} placeholder="PO-2026-0042" className="bg-background border-border rounded-lg mt-1" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <Label className="text-xs">Ship to (name)</Label>
+                <Input value={shipToName} onChange={(e) => setShipToName(e.target.value)} placeholder="Optional" className="bg-background border-border rounded-lg mt-1" />
+              </div>
+              <div>
+                <Label className="text-xs">Ship to (address)</Label>
+                <Input value={shipToAddress} onChange={(e) => setShipToAddress(e.target.value)} placeholder="Optional" className="bg-background border-border rounded-lg mt-1" />
               </div>
             </div>
           </div>
