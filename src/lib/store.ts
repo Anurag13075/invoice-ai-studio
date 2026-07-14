@@ -118,12 +118,18 @@ export interface Settings {
   companyName: string;
   companyEmail: string;
   companyAddress: string;
+  companyPhone?: string;
+  companyWebsite?: string;
+  companyTaxId?: string;
   companyLogo?: string;
   currency: string;
   taxRate: number;
   invoicePrefix: string;
   nextInvoiceNumber: number;
   brandColor: string;
+  bankDetails?: string;
+  defaultTerms?: string;
+  defaultFooter?: string;
 }
 
 interface AppState {
